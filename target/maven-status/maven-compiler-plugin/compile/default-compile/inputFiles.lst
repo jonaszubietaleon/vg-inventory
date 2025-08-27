@@ -1,0 +1,13 @@
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/VgMsCasasApplication.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/config/CorsConfig.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/config/CustomAuthenticationToken.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/config/SecurityConfig.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/controller/ConsumptionController.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/controller/InventoryController.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/dto/ProductDTO.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/model/Consumption.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/model/Inventory.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/repository/ConsumptionRepository.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/repository/InventoryRepository.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/service/ConsumptionService.java
+/workspaces/vg-inventory/src/main/java/pe/edu/vallegrande/vg_ms_casas/service/InventoryService.java

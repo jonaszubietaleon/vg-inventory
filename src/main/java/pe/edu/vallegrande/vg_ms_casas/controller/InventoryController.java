@@ -1,6 +1,8 @@
 package pe.edu.vallegrande.vg_ms_casas.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.vallegrande.vg_ms_casas.model.Inventory;
 import pe.edu.vallegrande.vg_ms_casas.service.InventoryService;
@@ -26,13 +28,17 @@ public class InventoryController {
     }
 
     @PostMapping
-    public Mono<Inventory> create(@RequestBody Inventory inventory) {
-        return inventoryService.save(inventory);
+    public Mono<ResponseEntity<Inventory>> create(@RequestBody Inventory inventory) {
+        return inventoryService.save(inventory)
+                .map(savedInventory -> ResponseEntity.status(HttpStatus.CREATED).body(savedInventory))
+                .onErrorReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
 
     @PutMapping("/{id}")
-    public Mono<Inventory> update(@PathVariable Integer id, @RequestBody Inventory inventory) {
-        return inventoryService.update(id, inventory);
+    public Mono<ResponseEntity<Inventory>> update(@PathVariable Integer id, @RequestBody Inventory inventory) {
+        return inventoryService.update(id, inventory)
+                .map(updatedInventory -> ResponseEntity.ok(updatedInventory))
+                .onErrorReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
 
     @PutMapping("/{id}/deactivate")

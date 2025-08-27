@@ -10,23 +10,21 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table("inventory_consumption")  // Mantiene la relación con la tabla
+@Table("inventory_consumption")
 public class Inventory {
 
     @Id
     @Column("id_inventory")
-    private Integer idInventory;        // id_inventory en la base
+    private Integer idInventory;
 
     @Column("product_id")
-    private Integer productId;          // id_product en la base
+    private Integer productId;
 
     @Column("initial_stock")
-    private Integer initialStock;       // Stock inicial
+    private Integer initialStock;
 
     @Column("current_stock")
-    private Integer currentStock;       // Stock actual
+    private Integer currentStock;
 
-    private String status;              // 'A' = activo, 'I' = inactivo
-
-
+    private String status;
 }

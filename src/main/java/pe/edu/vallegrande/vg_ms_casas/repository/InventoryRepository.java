@@ -7,6 +7,5 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface InventoryRepository extends ReactiveCrudRepository<Inventory, Integer> {
-    // Aquí puedes agregar métodos personalizados si los necesitas, por ejemplo:
-     Flux<Inventory> findByStatus(String status);
+    Flux<Inventory> findByStatus(String status);
 }

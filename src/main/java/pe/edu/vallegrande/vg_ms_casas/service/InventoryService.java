@@ -22,24 +22,50 @@ public class InventoryService {
     }
 
     public Mono<Inventory> save(Inventory inventory) {
-        if (inventory.getStatus() == null) {
-            inventory.setStatus("A"); // activo por defecto
+        inventory.setIdInventory(null);
+
+        if (inventory.getProductId() == null) {
+            return Mono.error(new IllegalArgumentException("Product ID is required"));
         }
-        return inventoryRepository.save(inventory);
+        if (inventory.getInitialStock() == null || inventory.getInitialStock() < 0) {
+            return Mono.error(new IllegalArgumentException("Initial stock must be a positive number"));
+        }
+        if (inventory.getCurrentStock() == null || inventory.getCurrentStock() < 0) {
+            return Mono.error(new IllegalArgumentException("Current stock must be a positive number"));
+        }
+
+        if (inventory.getStatus() == null || inventory.getStatus().isEmpty()) {
+            inventory.setStatus("A");
+        }
+
+        return inventoryRepository.save(inventory)
+                .onErrorMap(throwable -> {
+                    return new RuntimeException("Error saving inventory: " + throwable.getMessage(), throwable);
+                });
     }
 
     public Mono<Inventory> update(Integer id, Inventory inventory) {
         return inventoryRepository.findById(id)
                 .flatMap(existingInventory -> {
-                    existingInventory.setProductId(inventory.getProductId());
-                    existingInventory.setInitialStock(inventory.getInitialStock());
-                    existingInventory.setCurrentStock(inventory.getCurrentStock());
-                    existingInventory.setStatus(inventory.getStatus());
+                    if (inventory.getProductId() != null) {
+                        existingInventory.setProductId(inventory.getProductId());
+                    }
+                    if (inventory.getInitialStock() != null && inventory.getInitialStock() >= 0) {
+                        existingInventory.setInitialStock(inventory.getInitialStock());
+                    }
+                    if (inventory.getCurrentStock() != null && inventory.getCurrentStock() >= 0) {
+                        existingInventory.setCurrentStock(inventory.getCurrentStock());
+                    }
+                    if (inventory.getStatus() != null && !inventory.getStatus().isEmpty()) {
+                        existingInventory.setStatus(inventory.getStatus());
+                    }
                     return inventoryRepository.save(existingInventory);
+                })
+                .onErrorMap(throwable -> {
+                    return new RuntimeException("Error updating inventory: " + throwable.getMessage(), throwable);
                 });
     }
 
-    // Eliminación lógica
     public Mono<Void> delete(Integer id) {
         return inventoryRepository.findById(id)
                 .flatMap(existingInventory -> {
@@ -48,7 +74,6 @@ public class InventoryService {
                 }).then();
     }
 
-    // Restaurar inventario
     public Mono<Inventory> restore(Integer id) {
         return inventoryRepository.findById(id)
                 .flatMap(existingInventory -> {
@@ -57,15 +82,11 @@ public class InventoryService {
                 });
     }
 
-    // Listar solo activos
     public Flux<Inventory> findActive() {
-        return inventoryRepository.findAll()
-                .filter(inv -> "A".equalsIgnoreCase(inv.getStatus()));
+        return inventoryRepository.findByStatus("A");
     }
 
-    // Listar solo inactivos
     public Flux<Inventory> findInactive() {
-        return inventoryRepository.findAll()
-                .filter(inv -> "I".equalsIgnoreCase(inv.getStatus()));
+        return inventoryRepository.findByStatus("I");
     }
 }
